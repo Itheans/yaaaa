@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>แบบประเมินความเสี่ยงการลงทุน (Supabase)</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  :root{
+    --primary:#0b5ed7;
+    --bg:#f4f6f8;
+    --card:#fff;
+    --text:#1b1f24;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+  }
+  body{
+    font-family: Tahoma, sans-serif;
+    background: var(--bg);
+    margin:0;
+    padding:24px;
+    color:var(--text);
+  }
+  .container{ max-width: 900px; margin:0 auto; }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06);
+  }
+  h1{ margin:0 0 6px 0; font-size: 26px; }
+  .subtitle{ margin:0 0 18px 0; color:var(--muted); font-size:14px; }
+
+  .question{
+    margin: 14px 0;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background:#fafafa;
+  }
+  .question-title{
+    font-weight:700;
+    margin-bottom:10px;
+  }
+
+  .choices{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .choice{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    background:#fff;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .choice:hover{ border-color:#94a3b8; }
+  .choice input{ transform:scale(1.2); }
+  .choice .text{ line-height:1.35; }
+
+  .actions{
+    display:flex;
+    gap:12px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  button{
+    padding: 12px 16px;
+    border-radius: 10px;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+  }
+  .btn-primary{ background:var(--primary); color:#fff; }
+  .btn-secondary{ background:#e5e7eb; color:#111827; }
+
+  button:disabled{ opacity:.6; cursor:not-allowed; }
+
+  .result{
+    margin-top:18px;
+    display:none;
+    padding: 16px;
+    border-radius: 10px;
+    border:1px solid var(--border);
+  }
+  .badge{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:14px;
+    margin-left:6px;
+  }
+  .low{ background:#dcfce7; color:#166534; }
+  .medium{ background:#fef9c3; color:#854d0e; }
+  .high{ background:#fee2e2; color:#991b1b; }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:12px;
+    border-radius:10px;
+    overflow:hidden;
+  }
+  th, td{
+    border:1px solid var(--border);
+    padding:10px;
+    text-align:center;
+  }
+  th{ background:#f1f5f9; }
+
+  .status{ margin-top:10px; font-size:14px; color:var(--muted); }
+  .error{ color:#b91c1c; font-weight:700; }
+
+  .req{
+    color:#b91c1c;
+    font-weight:700;
+    margin-left:4px;
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="card">
+    <h1>แบบประเมินระดับความเสี่ยงการลงทุน</h1>
+    <p class="subtitle">เลือกคำตอบแบบ “ติ๊กช้อย” และบันทึกผลลง Supabase</p>
+
+    <form id="riskForm">
+
+      <!-- Q1 -->
+      <div class="question">
+        <div class="question-title">1) อายุของคุณ <span class="req">*</span></div>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="q1" value="1" required>
+            <div class="text">มากกว่า 60 ปี</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q1" value="2" required>
+            <div class="text">46 - 60 ปี</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q1" value="3" required>
+            <div class="text">36 - 45 ปี</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q1" value="4" required>
+            <div class="text">น้อยกว่า 35 ปี</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question">
+        <div class="question-title">2) รายได้ต่อเดือน <span class="req">*</span></div>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="q2" value="1" required>
+            <div class="text">ต่ำกว่า 15,000 บาท</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q2" value="2" required>
+            <div class="text">15,000 - 30,000 บาท</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q2" value="3" required>
+            <div class="text">30,001 - 50,000 บาท</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q2" value="4" required>
+            <div class="text">มากกว่า 50,000 บาท</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question">
+        <div class="question-title">3) เงินออมเทียบรายจ่ายต่อเดือน <span class="req">*</span></div>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="q3" value="1" required>
+            <div class="text">ต่ำกว่า 3 เท่า</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q3" value="2" required>
+            <div class="text">3 - 6 เท่า</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q3" value="3" required>
+            <div class="text">6 - 12 เท่า</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q3" value="4" required>
+            <div class="text">มากกว่า 12 เท่า</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question">
+        <div class="question-title">4) ประสบการณ์ลงทุน <span class="req">*</span></div>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="q4" value="1" required>
+            <div class="text">ไม่เคยลงทุน</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q4" value="2" required>
+            <div class="text">ลงทุนเฉพาะเงินฝาก/ตราสารหนี้</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q4" value="3" required>
+            <div class="text">ลงทุนหุ้น/กองทุนบ้าง</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q4" value="4" required>
+            <div class="text">ลงทุนเป็นประจำ</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question">
+        <div class="question-title">5) ถ้าพอร์ตขาดทุน 20% คุณจะทำอย่างไร <span class="req">*</span></div>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="q5" value="1" required>
+            <div class="text">ขายทันทีทั้งหมด</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q5" value="2" required>
+            <div class="text">ขายบางส่วน</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q5" value="3" required>
+            <div class="text">ถือรอดูสถานการณ์</div>
+          </label>
+          <label class="choice">
+            <input type="radio" name="q5" value="4" required>
+            <div class="text">ซื้อเพิ่ม</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btnSubmit" class="btn-primary" type="submit">ประเมินและบันทึกผล</button>
+        <button class="btn-secondary" type="button" id="btnReset">ล้างแบบฟอร์ม</button>
+      </div>
+    </form>
+
+    <div id="result" class="result"></div>
+    <div id="status" class="status"></div>
+  </div>
+</div>
+
+<script>
+/** ✅ Supabase Config (ของคุณ) */
+const supabaseUrl = "https://yanpgrrlsnhpknljdmmg.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhbnBncnJsc25ocGtubGpkbW1nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMTI1MDQsImV4cCI6MjA4Mzg4ODUwNH0.TfFhJWCC-I8A2ViAvkXmsC-ILGtsEmHGAfboo9kJg-Y";
+
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+const form = document.getElementById("riskForm");
+const resultBox = document.getElementById("result");
+const statusBox = document.getElementById("status");
+const btnSubmit = document.getElementById("btnSubmit");
+const btnReset = document.getElementById("btnReset");
+
+function setStatus(msg, isError=false){
+  statusBox.innerHTML = isError ? `<span class="error">${msg}</span>` : msg;
+}
+
+function computeRisk(score){
+  // เกณฑ์ตัวอย่าง (ปรับได้)
+  if(score <= 8) return { level: "ต่ำ", cls:"low", portfolio:[
+    {name:"เงินฝาก", pct:"70%"},
+    {name:"ตราสารหนี้", pct:"25%"},
+    {name:"หุ้น", pct:"5%"},
+  ]};
+  if(score <= 14) return { level: "ปานกลาง", cls:"medium", portfolio:[
+    {name:"เงินฝาก", pct:"40%"},
+    {name:"ตราสารหนี้", pct:"40%"},
+    {name:"หุ้น", pct:"20%"},
+  ]};
+  return { level: "สูง", cls:"high", portfolio:[
+    {name:"เงินฝาก", pct:"20%"},
+    {name:"ตราสารหนี้", pct:"30%"},
+    {name:"หุ้น", pct:"50%"},
+  ]};
+}
+
+function renderPortfolio(portfolio){
+  return `
+    <table>
+      <thead>
+        <tr><th>ประเภทสินทรัพย์</th><th>สัดส่วนแนะนำ</th></tr>
+      </thead>
+      <tbody>
+        ${portfolio.map(r => `<tr><td>${r.name}</td><td>${r.pct}</td></tr>`).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // ✅ ตรวจว่าตอบครบ (radio required จะช่วยอยู่แล้ว)
+  const fd = new FormData(form);
+  const requiredKeys = ["q1","q2","q3","q4","q5"];
+  for(const k of requiredKeys){
+    if(!fd.get(k)){
+      alert("กรุณาเลือกคำตอบให้ครบทุกข้อ");
+      return;
+    }
+  }
+
+  try{
+    setStatus("กำลังประมวลผล...");
+    btnSubmit.disabled = true;
+
+    let score = 0;
+    const answers = requiredKeys.map((k)=> {
+      const val = parseInt(fd.get(k), 10);
+      score += val;
+      return { question: k, answer: val };
+    });
+
+    const risk = computeRisk(score);
+
+    // ✅ Insert ลง Supabase
+    setStatus("กำลังบันทึกลงฐานข้อมูล...");
+    const { data, error } = await supabaseClient
+      .from("risk_results")
+      .insert({
+        score: score,
+        risk_level: risk.level,
+        answers: answers
+      })
+      .select("id, created_at")
+      .single();
+
+    if(error){
+      console.error(error);
+      setStatus("บันทึกไม่สำเร็จ: " + error.message, true);
+      return;
+    }
+
+    resultBox.style.display = "block";
+    resultBox.innerHTML = `
+      <h2>ผลการประเมิน</h2>
+      <p><b>คะแนนรวม:</b> ${score}</p>
+      <p><b>ระดับความเสี่ยง:</b> ${risk.level}
+        <span class="badge ${risk.cls}">${risk.level}</span>
+      </p>
+      <p class="status">บันทึกแล้ว ✅ (id: ${data.id}) เวลา: ${new Date(data.created_at).toLocaleString("th-TH")}</p>
+
+      <h3>แนวทางจัดพอร์ตการลงทุน (ตัวอย่าง)</h3>
+      ${renderPortfolio(risk.portfolio)}
+    `;
+
+    setStatus("สำเร็จ ✅ บันทึกผลลง Supabase เรียบร้อยแล้ว");
+  }
+  catch(err){
+    console.error(err);
+    setStatus("เกิดข้อผิดพลาด: " + err.message, true);
+  }
+  finally{
+    btnSubmit.disabled = false;
+  }
+});
+
+btnReset.addEventListener("click", ()=>{
+  form.reset();
+  resultBox.style.display = "none";
+  resultBox.innerHTML = "";
+  setStatus("");
+});
+</script>
+</body>
+</html>

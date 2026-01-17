@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>แบบประเมินความเสี่ยงการลงทุน</title>
 
 <style>
@@ -87,103 +87,160 @@
   th,td{ border:1px solid var(--border); padding:10px; text-align:center; }
   th{ background:#f1f5f9; }
 </style>
+
 </head>
 
 <body>
 <div class="container">
-<div class="card">
-<h1>แบบประเมินระดับความเสี่ยงการลงทุน</h1>
-<p class="subtitle">ประเมินผลได้ทันที (ไม่บันทึกลงฐานข้อมูล)</p>
 
-<form id="riskForm">
-  <!-- ใช้คำถามเดิม -->
-  <div class="question">
-    <div class="question-title">1) อายุของคุณ</div>
-    <div class="choices">
-      <label class="choice"><input type="radio" name="q1" value="1" required> มากกว่า 60 ปี</label>
-      <label class="choice"><input type="radio" name="q1" value="2"> 46 - 60 ปี</label>
-      <label class="choice"><input type="radio" name="q1" value="3"> 36 - 45 ปี</label>
-      <label class="choice"><input type="radio" name="q1" value="4"> น้อยกว่า 35 ปี</label>
+<!-- หน้าแรก -->
+<div id="intro" class="card">
+  <h2>แบบประเมินความเสี่ยงการลงทุน</h2>
+  <p>กรุณากรอกชื่อ-สกุล</p>
+  <input id="fullname" style="width:100%;padding:10px">
+  <br><br>
+  <button onclick="start()">เริ่มทำแบบประเมิน</button>
+</div>
+
+<!-- แบบประเมิน -->
+<div id="assessment" class="card" style="display:none">
+  <h3>ผู้ทำแบบประเมิน: <span id="showName"></span></h3>
+
+  <form id="riskForm">
+
+    <div class="question">
+      <b>1 อายุปัจจุบันของท่าน</b>
+      <label class="choice"><input type="radio" name="q1" value="1" required> มากกว่า 55</label>
+      <label class="choice"><input type="radio" name="q1" value="2"> 45–55</label>
+      <label class="choice"><input type="radio" name="q1" value="3"> 35–45</label>
+      <label class="choice"><input type="radio" name="q1" value="4"> ต่ำกว่า 35</label>
     </div>
-  </div>
 
-  <div class="question">
-    <div class="question-title">2) รายได้ต่อเดือน</div>
-    <div class="choices">
-      <label class="choice"><input type="radio" name="q2" value="1" required> ต่ำกว่า 15,000</label>
-      <label class="choice"><input type="radio" name="q2" value="2"> 15,000 - 30,000</label>
-      <label class="choice"><input type="radio" name="q2" value="3"> 30,001 - 50,000</label>
-      <label class="choice"><input type="radio" name="q2" value="4"> มากกว่า 50,000</label>
+    <div class="question">
+      <b>2รายได้ต่อเดือน</b>
+      <label class="choice"><input type="radio" name="q2" value="1" required> < 15,000</label>
+      <label class="choice"><input type="radio" name="q2" value="2"> 15,000–30,000</label>
+      <label class="choice"><input type="radio" name="q2" value="3"> 30,001–50,000</label>
+      <label class="choice"><input type="radio" name="q2" value="4"> 50,000</label>
     </div>
-  </div>
 
-  <div class="question">
-    <div class="question-title">3) เงินออมเทียบรายจ่าย</div>
-    <div class="choices">
-      <label class="choice"><input type="radio" name="q3" value="1" required> ต่ำกว่า 3 เท่า</label>
-      <label class="choice"><input type="radio" name="q3" value="2"> 3 - 6 เท่า</label>
-      <label class="choice"><input type="radio" name="q3" value="3"> 6 - 12 เท่า</label>
-      <label class="choice"><input type="radio" name="q3" value="4"> มากกว่า 12 เท่า</label>
+    <div class="question">
+      <b>3 ปัจจุบันท่านมีภาระทางการเงินและค่าใช้จ่ายประจำเช่น ค่าผ่อนบ้าน รถ ค่าใช้จ่ายส่วนตัวและค่าเลี้ยงดูครอบครัวเป็นสัดส่วนเท่าใด</b>
+      <label class="choice"><input type="radio" name="q3" value="1" required> > มากกว่าร้อยละ 75 ของรายได้ทั้งหมด</label>
+      <label class="choice"><input type="radio" name="q3" value="2"> ระหว่างร้อยละ 50 ถึง 75 ของรายได้ทั้งหมด</label>
+      <label class="choice"><input type="radio" name="q3" value="3"> ระหว่างร้อยละ 25 ถึง 50 ของรายได้ทั้งหมด</label>
+      <label class="choice"><input type="radio" name="q3" value="4"> น้อยกว่าร้อยละ 25 ของรายได้ทั้งหมด</label>
     </div>
-  </div>
 
-  <div class="question">
-    <div class="question-title">4) ประสบการณ์ลงทุน</div>
-    <div class="choices">
-      <label class="choice"><input type="radio" name="q4" value="1" required> ไม่เคยลงทุน</label>
-      <label class="choice"><input type="radio" name="q4" value="2"> เงินฝาก/ตราสารหนี้</label>
-      <label class="choice"><input type="radio" name="q4" value="3"> หุ้น/กองทุนบ้าง</label>
-      <label class="choice"><input type="radio" name="q4" value="4"> ลงทุนเป็นประจำ</label>
+    <div class="question">
+      <b>4 คุณมีสถานภาพทางการเงินปัจจุบันอย่างไร</b>
+      <label class="choice"><input type="radio" name="q4" value="1" required> > มีสินทรัพย์น้อยกว่าหนี้สิน</label>
+      <label class="choice"><input type="radio" name="q4" value="2"> มีสินทรัพย์เท่ากับหนี้สิน</label>
+      <label class="choice"><input type="radio" name="q4" value="3"> มีทรัพย์สินมากกว่าหนี้สิน</label>
+      <label class="choice"><input type="radio" name="q4" value="4"> มีความมั่นใจว่ามีเงินออมหรือเงินลงทุนเพียงพอสำหรับการใช้ชีวิตหลังเกษียณแล้ว</label>
     </div>
-  </div>
 
-  <div class="question">
-    <div class="question-title">5) ถ้าพอร์ตขาดทุน 20%</div>
-    <div class="choices">
-      <label class="choice"><input type="radio" name="q5" value="1" required> ขายหมด</label>
-      <label class="choice"><input type="radio" name="q5" value="2"> ขายบางส่วน</label>
-      <label class="choice"><input type="radio" name="q5" value="3"> ถือรอ</label>
-      <label class="choice"><input type="radio" name="q5" value="4"> ซื้อเพิ่ม</label>
+    <div class="question">
+      <b>5 คุณเคยมีประสบการณ์ หรือมีความรู้ในการลงทุนในทรัพย์สินกลุ่มใดต่อไปนี้บ้าง (เลือกได้มากกว่า 1 ข้อ)</b>
+      <label class="choice"><input type="radio" name="q5" value="1" required> > เงินฝากธนาคาร</label>
+      <label class="choice"><input type="radio" name="q5" value="2"> พันธบัตรรัฐบาล หรือกองทุนรวมพันธบัตรรัฐบาล</label>
+      <label class="choice"><input type="radio" name="q5" value="3"> หุ้นกู้ หรือกองทุนรวมตราสารหนี้</label>
+      <label class="choice"><input type="radio" name="q5" value="4"> หุ้นสามัญ หรือกองทุนรวมหุ้น หรือสินทรัพย์อื่นที่มีความเสี่ยงสูง</label>
     </div>
-  </div>
 
-  <div class="actions">
-    <button class="btn-primary">ประเมินผล</button>
-    <button type="button" class="btn-secondary" onclick="this.form.reset()">ล้าง</button>
-  </div>
-</form>
+    <div class="question">
+      <b>6 ระยะเวลาที่คุณคาดว่าจะไม่มีความจำเป็นต้องใช้เงินลงทุนนี้</b>
+      <label class="choice"><input type="radio" name="q6" value="1" required> > ไม่เกิน 1 ปี</label>
+      <label class="choice"><input type="radio" name="q6" value="2"> 1 ถึง 3 ปี</label>
+      <label class="choice"><input type="radio" name="q6" value="3"> 3 ถึง 5 ปี</label>
+      <label class="choice"><input type="radio" name="q6" value="4"> มากกว่า 5 ปี</label>
+    </div>
+
+    <div class="question">
+      <b>7 วัตถุประสงค์หลักในการลงทุนของคุณ คือ</b>
+      <label class="choice"><input type="radio" name="q7" value="1" required> > เน้นเงินต้นต้องปลอดภัยและได้รับผลตอบแทนสม่ำเสมอแต่ต่ำได้</label>
+      <label class="choice"><input type="radio" name="q7" value="2"> เน้นโอกาสได้รับผลตอบแทนที่สม่ำเสมอ แต่อาจเสี่ยงที่จะสูญเสียเงินต้นได้บ้าง</label>
+      <label class="choice"><input type="radio" name="q7" value="3"> เน้นโอกาสได้รับผลตอบแทนที่สูงขึ้น แต่อาจเสี่ยงที่จะสูญเสียเงินต้นได้มากขึ้น</label>
+      <label class="choice"><input type="radio" name="q7" value="4"> เน้นผลตอบแทนสูงสุดในระยะยาว แต่อาจเสี่ยงที่จะสูญเงินต้นส่วนใหญ่ได้</label>
+    </div>
+
+    <div class="question">
+      <b>8 เมื่อพิจารณาตัวอย่างผลตอบแทนของกลุ่มการลงทุนที่อาจเกิดขึ้นด้านล่าง คุณเต็มใจที่จะลงทุนในกลุ่มใด</b>
+      <label class="choice"><input type="radio" name="q8" value="1" required> > กลุ่มการลงทุนที่ 1: โอกาสได้ผลตอบแทน 2.5% โดย ไม่ขาดทุน</label>
+      <label class="choice"><input type="radio" name="q8" value="2"> กลุ่มการลงทุนที่ 2: ผลตอบแทนสูงสุด 7% แต่ อาจขาดทุนได้ถึง 1%</label>
+      <label class="choice"><input type="radio" name="q8" value="3"> กลุ่มการลงทุนที่ 3: ผลตอบแทนสูงสุด 15% แต่ อาจขาดทุนได้ถึง 5%</label>
+      <label class="choice"><input type="radio" name="q8" value="4"> กลุ่มการลงทุนที่ 4: ผลตอบแทนสูงสุด 25% แต่ อาจขาดทุนได้ถึง 15%</label>
+    </div>
+
+    <button>ประเมินผล</button>
+  </form>
+
+</div>
 
 <div id="result" class="result"></div>
-</div>
+
 </div>
 
 <script>
-function computeRisk(score){
-  if(score <= 8) return {level:"ต่ำ",cls:"low",p:[["เงินฝาก","70%"],["ตราสารหนี้","25%"],["หุ้น","5%"]]};
-  if(score <= 14) return {level:"ปานกลาง",cls:"medium",p:[["เงินฝาก","40%"],["ตราสารหนี้","40%"],["หุ้น","20%"]]};
+const WEB_APP_URL = "PUT_WEB_APP_URL_HERE"; // ← ใส่ URL จาก Apps Script
+
+function start(){
+  const name=document.getElementById("fullname").value.trim();
+  if(!name){alert("กรุณากรอกชื่อ");return;}
+  document.getElementById("showName").textContent=name;
+  document.getElementById("intro").style.display="none";
+  document.getElementById("assessment").style.display="block";
+}
+
+function riskLevel(score){
+  if(score<=10) return {level:"ต่ำ",cls:"low",p:[["เงินฝาก","70%"],["ตราสารหนี้","25%"],["หุ้น","5%"]]};
+
+  if(score<=40) return {level:"ปานกลาง",cls:"medium",p:[["เงินฝาก","40%"],["ตราสารหนี้","40%"],["หุ้น","20%"]]};
+
   return {level:"สูง",cls:"high",p:[["เงินฝาก","20%"],["ตราสารหนี้","30%"],["หุ้น","50%"]]};
 }
 
-document.getElementById("riskForm").addEventListener("submit", e=>{
+document.getElementById("riskForm").addEventListener("submit",async e=>{
   e.preventDefault();
-  const fd = new FormData(e.target);
-  let score = 0;
-  ["q1","q2","q3","q4","q5"].forEach(q=> score += parseInt(fd.get(q)));
 
-  const r = computeRisk(score);
+  const fd=new FormData(e.target);
+  let score=0;
+  ["q1","q2","q3","q4","q5","q6","q7","q8"].forEach(q=>score+=parseInt(fd.get(q)));
 
-  document.getElementById("result").style.display="block";
-  document.getElementById("result").innerHTML=`
-    <h3>คะแนนรวม: ${score}</h3>
-    <p>ระดับความเสี่ยง:
-      <span class="badge ${r.cls}">${r.level}</span>
-    </p>
-    <table>
-      <tr><th>สินทรัพย์</th><th>สัดส่วน</th></tr>
-      ${r.p.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("")}
-    </table>
-  `;
+  const result = riskLevel(score);
+const { level, cls, p } = result;
+
+document.getElementById("assessment").style.display="none";
+document.getElementById("result").style.display="block";
+document.getElementById("result").innerHTML = `
+  <h3>คะแนนรวม: ${score}</h3>
+  <p>
+    ระดับความเสี่ยง:
+    <span class="badge ${cls}">${level}</span>
+  </p>
+  <table>
+    <tr><th>สินทรัพย์</th><th>สัดส่วน</th></tr>
+    ${p.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("")}
+  </table>
+`;
+
+  await fetch(WEB_APP_URL,{
+    method:"POST",
+    body:JSON.stringify({
+      fullname:document.getElementById("showName").textContent,
+      q1:fd.get("q1"),
+      q2:fd.get("q2"),
+      q3:fd.get("q3"),
+      q4:fd.get("q4"),
+      q5:fd.get("q5"),
+      q6:fd.get("q6"),
+      q7:fd.get("q7"),
+      q8:fd.get("q8"),
+      score:score
+    })
+  });
 });
 </script>
+
 </body>
 </html>

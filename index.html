@@ -221,10 +221,41 @@ function start(){
 }
 
 function riskToStyle(score){
-  if(score <= 10) return { label:"Dividend", styles:["Dividend"] };
-  if(score <= 40) return { label:"Value", styles:["Value"] };
-  return { label:"Growth", styles:["Growth"] };
+  if(score <= 10){
+    return {
+      label: "Dividend",
+      styles: ["Dividend"],
+      p: [
+        ["เงินฝาก", "70%"],
+        ["ตราสารหนี้", "25%"],
+        ["หุ้น", "5%"]
+      ]
+    };
+  }
+
+  if(score <= 40){
+    return {
+      label: "Value",
+      styles: ["Value"],
+      p: [
+        ["เงินฝาก", "40%"],
+        ["ตราสารหนี้", "40%"],
+        ["หุ้น", "20%"]
+      ]
+    };
+  }
+
+  return {
+    label: "Growth",
+    styles: ["Growth"],
+    p: [
+      ["เงินฝาก", "20%"],
+      ["ตราสารหนี้", "30%"],
+      ["หุ้น", "50%"]
+    ]
+  };
 }
+
 
 function styleClass(style){
   if(style==="Dividend") return "low";
@@ -306,23 +337,49 @@ riskForm.addEventListener("submit", e=>{
     .filter(x => risk.styles.includes(x["US DR"]));
 
   result.innerHTML = `
-    <h3>ผลการประเมิน</h3>
-    <p><b>คะแนน:</b> ${score}</p>
-    <p>
-      <b>Investment Style:</b>
-      <span class="badge ${styleClass(risk.label)}">${risk.label}</span>
-    </p>
+  <div class="summary-card">
 
-    <h4>กองทุน</h4>
-    ${renderTable(funds)}
+    <div class="summary-header">
+      <div class="score">
+        คะแนนรวม: <b>${score}</b>
+      </div>
+      <div class="risk">
+        ระดับความเสี่ยง:
+        <span class="risk-badge ${styleClass(risk.label)}">
+          ${risk.label === "Value" ? "ปานกลาง" :
+            risk.label === "Dividend" ? "ต่ำ" : "สูง"}
+        </span>
+      </div>
+    </div>
 
-    <h4>หุ้นไทย (${risk.label})</h4>
-${renderThaiByIndustry(thaiStocks)}
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>สินทรัพย์</th>
+          <th>สัดส่วน</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${risk.p.map(p => `
+          <tr>
+            <td>${p[0]}</td>
+            <td>${p[1]}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
 
+  </div>
 
-    <h4>DR (${risk.label})</h4>
-    ${renderTable(drStocks)}
-  `;
+  <h4>กองทุน</h4>
+  ${renderTable(funds)}
+
+  <h4>หุ้นไทย (${risk.label})</h4>
+  ${renderThaiByIndustry(thaiStocks)}
+
+  <h4>DR (${risk.label})</h4>
+  ${renderTable(drStocks)}
+`;
 
   assessment.style.display="none";
   result.style.display="block";

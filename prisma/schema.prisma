@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+// =======================================
+// เก็บผลแบบประเมินความเสี่ยงการลงทุน
+// =======================================
+model RiskAssessment {
+  id        Int      @id @default(autoincrement())
+
+  // ✅ ชื่อผู้ทำแบบสอบถาม
+  fullName  String
+
+  // ✅ คะแนนรวม
+  score     Int
+
+  // ✅ กลุ่มความเสี่ยงที่ระบบคำนวณได้
+  // Dividend / Value / Growth
+  riskLabel String
+
+  // ✅ คำตอบของข้อ 1-8
+  q1 Int
+  q2 Int
+  q3 Int
+  q4 Int
+  q5 Int
+  q6 Int
+  q7 Int
+  q8 Int
+
+  // ✅ พอร์ตแนะนำ เช่น เงินฝาก 70% ตราสารหนี้ 25% หุ้น 5%
+  // เก็บเป็น JSON เพื่อความยืดหยุ่น
+  portfolio Json
+
+  // ✅ รายการแนะนำจากไฟล์ Excel (optional)
+  // เก็บเป็น JSON เพราะมีหลาย column/หลายแถว
+  recommendedFunds      Json?
+  recommendedThaiStocks Json?
+  recommendedDR         Json?
+
+  createdAt DateTime @default(now())
+}

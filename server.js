@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(".")); 
 
 app.post("/api/risk-assessment", async (req, res) => {
   try {

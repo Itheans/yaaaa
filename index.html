@@ -543,7 +543,7 @@ UEsDBBQABgAIAAAAIQB8bJgWaQEAAKAFAAATAAgCW0NvbnRlbnRfVHlwZXNdLnhtbCCiBAIooAACAAAA
 
       // ✅ เพิ่ม: ส่งไปบันทึก DB
       try {
-        await fetch("http://localhost:3000/api/risk-assessment", {
+        await fetch("/api/risk-assessment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
